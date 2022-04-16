@@ -10,6 +10,9 @@ app.use(cors());
 app.use(express.json());
 
 //Routes
+app.get("/", (req, res) => {
+  res.send("we are at pollRoll API");
+});
 
 //import routes
 const userRoute = require("./Routes/userRouter");
