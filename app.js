@@ -35,4 +35,4 @@ mongoose
   .catch((err) => console.log(err));
 
 //start listening to the server
-app.listen(process.env.PORT || 443);
+app.listen(process.env.PORT || 80);
