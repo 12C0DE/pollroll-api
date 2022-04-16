@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
-const port = 3001;
 require("dotenv/config");
 
 //middleware
@@ -36,4 +35,4 @@ mongoose
   .catch((err) => console.log(err));
 
 //start listening to the server
-app.listen(port);
+app.listen(process.env.PORT || 3001);
