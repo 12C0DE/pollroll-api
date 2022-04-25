@@ -11,7 +11,7 @@ router.get("/add/:pollId", (req, res) => {
 });
 
 router.get("/clear", (req, res) => {
-  res.clearCookie("pollId");
+  res.clearCookie("pollId").sendStatus(204);
 });
 
 module.exports = router;
