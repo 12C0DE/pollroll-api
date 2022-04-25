@@ -2,16 +2,18 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 require("dotenv/config");
 
 //middleware
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 //Routes
 app.get("/", (req, res) => {
-  res.send("we are at pollRoll API");
+  res.send("This is PollRoll API");
 });
 
 //import routes
@@ -20,6 +22,9 @@ app.use("/users", userRoute);
 
 const pollRoute = require("./Routes/pollRouter");
 app.use("/polls", pollRoute);
+
+const voteAtRoute = require("./Routes/voteAtRouter");
+app.use("/voteat", voteAtRoute);
 
 //connect to DB
 mongoose
@@ -38,4 +43,5 @@ mongoose
   .catch((err) => console.log(err));
 
 //start listening to the server
+// app.listen(80);
 app.listen(process.env.PORT || 80);
