@@ -10,7 +10,7 @@ router.get("/add/:pollId", (req, res) => {
   res.cookie("pollId", req.params.pollId).redirect("https://www.pollroll.net");
 });
 
-router.get("/pollId/clear", (req, res) => {
+router.get("/clear", (req, res) => {
   res.clearCookie("pollId");
 });
 
