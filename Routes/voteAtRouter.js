@@ -8,7 +8,9 @@ router.get("/pollId", async (req, res) => {
 });
 
 router.get("/add/:pollId", (req, res) => {
-  res.cookie("pollId", req.params.pollId).redirect("https://www.pollroll.net");
+  res
+    .cookie("pollId", req.params.pollId, { expire: 600000 + Date.now() })
+    .redirect("https://www.pollroll.net");
 });
 
 router.get("/clear", (req, res) => {
