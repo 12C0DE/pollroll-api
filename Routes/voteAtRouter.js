@@ -2,8 +2,8 @@ const express = require("express");
 const res = require("express/lib/response");
 const router = express.Router();
 
-router.get("/pollId", (req, res) => {
-  const pollId = { pollId: req.cookies.pollId };
+router.get("/pollId", async (req, res) => {
+  const pollId = await { pollId: req.cookies.pollId };
   res.json(pollId);
 });
 
