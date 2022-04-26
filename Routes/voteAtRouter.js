@@ -4,7 +4,7 @@ const router = express.Router();
 
 //retrieve pollid
 router.get("/pollId", (req, res) => {
-  res.json(res.cookies("pollId"));
+  res.json(req.cookies.pollId);
 });
 
 //create pollId cookie
