@@ -23,25 +23,20 @@ app.use("/users", userRoute);
 const pollRoute = require("./Routes/pollRouter");
 app.use("/polls", pollRoute);
 
-const voteAtRoute = require("./Routes/voteAtRouter");
-app.use("/voteat", voteAtRoute);
+const voteLinkRoute = require("./Routes/voteLinkRouter");
+app.use("/voteat", voteLinkRoute);
 
 //connect to DB
 mongoose
-  .connect(
-    process.env.REACT_APP_DB_CONNECTION,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      //   useCreateIndex: true,
-      //   useFindAndModify: false,
-      dbName: "pollroll_db",
-    }
-    //   () => console.log("connected db")
-  )
+  .connect(process.env.REACT_APP_DB_CONNECTION, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    //   useCreateIndex: true,
+    //   useFindAndModify: false,
+    dbName: "pollroll_db",
+  })
   .then(() => console.log("connected db"))
   .catch((err) => console.log(err));
 
 //start listening to the server
-// app.listen(80);
 app.listen(process.env.PORT || 80);
