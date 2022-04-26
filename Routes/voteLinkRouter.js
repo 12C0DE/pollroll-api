@@ -16,7 +16,7 @@ router.get("/pollId/:ip", async (req, res) => {
 
 router.get("/add/:pollId", async (req, res) => {
   const newLink = new VoteLink({
-    ipAdd: ip.address(),
+    ipAdd: req.ip,
     pollId: req.params.pollId,
   });
 
@@ -30,7 +30,7 @@ router.get("/add/:pollId", async (req, res) => {
 
 //clear pollId
 router.get("/clear/:ip", async (req, res) => {
-  const delLink = await VoteLink.deleteOne({ ipAdd: req.params.ip });
+  const delLink = await VoteLink.deleteMany({ ipAdd: req.params.ip });
 
   res.sendStatus(204);
 });
