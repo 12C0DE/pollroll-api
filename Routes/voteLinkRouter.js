@@ -1,12 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const VoteLink = require("../Models/VoteLink");
-const ip = require("ip");
+const ipaddr = require("ipaddr.js");
 
 //retrieve pollid
 router.get("/pollId/:ip", async (req, res) => {
   try {
-    const pollId = await VoteLink.findOne({ ipAdd: req.params.ip });
+    let remoteAddress = req.params.ip;
+    if (ipaddr.isValid(req.ip)) {
+      remoteAddress = ipaddr.process(req.ip).toString();
+    }
+    const pollId = await VoteLink.findOne({ ipAdd: remoteAddress });
 
     res.json(pollId);
   } catch (err) {
@@ -15,8 +19,15 @@ router.get("/pollId/:ip", async (req, res) => {
 });
 
 router.get("/add/:pollId", async (req, res) => {
+  let remoteAddress = req.ip;
+
+  if (ipaddr.isValid(req.ip)) {
+    remoteAddress = ipaddr.process(req.ip).toString();
+  } else {
+    remoteAddress = "error";
+  }
   const newLink = new VoteLink({
-    ipAdd: req.ip,
+    ipAdd: remoteAddress,
     pollId: req.params.pollId,
   });
 
@@ -30,7 +41,12 @@ router.get("/add/:pollId", async (req, res) => {
 
 //clear pollId
 router.get("/clear/:ip", async (req, res) => {
-  const delLink = await VoteLink.deleteMany({ ipAdd: req.params.ip });
+  let remoteAddress = req.params.ip;
+
+  if (ipaddr.isValid(req.params.ip)) {
+    remoteAddress = ipaddr.process(req.params.ip).toString();
+  }
+  const delLink = await VoteLink.deleteMany({ ipAdd: remoteAddress });
 
   res.sendStatus(204);
 });
