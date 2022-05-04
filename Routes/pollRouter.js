@@ -41,6 +41,29 @@ router.get("/pollnames/:authId/:uid", async (req, res) => {
   }
 });
 
+//retrieve specific poll that has this unique keyphrase
+router.get("/pollsearch/:keyphrase", async (req, res) => {
+  try {
+    const pollSearch = await Poll.findOne({
+      keyPhrase: req.params.keyphrase,
+    }).select("pollName");
+    res.json(pollSearch);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
+//check if keyphrase is unique
+router.get("/keyphrase/:key", (req, res) => {
+  try {
+    const isUnique = Poll.find({ keyPhrase: req.params.key }).count < 1;
+
+    res.json({ isUnique: isUnique });
+  } catch (err) {
+    res.json(false);
+  }
+});
+
 //retrieve specific poll to EDIT if you are the authID
 router.get("/:_id/:authId", async (req, res) => {
   try {
@@ -68,6 +91,7 @@ router.get("/:_id", async (req, res) => {
 router.post("/post", async (req, res) => {
   const newPoll = new Poll({
     pollName: req.body.pollName,
+    keyPhrase: req.body.keyPhrase,
     details: req.body.details,
     rsvpDate: req.body.rsvpDate,
     pollOptions: req.body.pollOptions,

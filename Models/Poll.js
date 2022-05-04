@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const PollSchema = mongoose.Schema({
   pollName: { type: String, require: true },
+  keyPhrase: { type: String, require: true, unique: true },
   details: String,
   rsvpDate: Date,
   pollOptions: { type: [], require: true },
