@@ -45,7 +45,7 @@ router.get("/pollnames/:authId/:uid", async (req, res) => {
 router.get("/pollsearch/:keyphrase", async (req, res) => {
   try {
     const pollSearch = await Poll.findOne({
-      keyPhrase: req.params.keyphrase,
+      keyPhrase: req.params.keyphrase.toLowerCase(),
     }).select("pollName");
     res.json(pollSearch);
   } catch (err) {
@@ -54,9 +54,13 @@ router.get("/pollsearch/:keyphrase", async (req, res) => {
 });
 
 //check if keyphrase is unique
-router.get("/keyphrase/:key", (req, res) => {
+router.get("/keyphrase/:key", async (req, res) => {
   try {
-    const isUnique = Poll.find({ keyPhrase: req.params.key }).count < 1;
+    const result = await Poll.countDocuments({
+      keyPhrase: req.params.key.toLowerCase(),
+    });
+
+    const isUnique = result < 1;
 
     res.json({ isUnique: isUnique });
   } catch (err) {
@@ -91,7 +95,7 @@ router.get("/:_id", async (req, res) => {
 router.post("/post", async (req, res) => {
   const newPoll = new Poll({
     pollName: req.body.pollName,
-    keyPhrase: req.body.keyPhrase,
+    keyPhrase: req.body.keyPhrase.toLowerCase(),
     details: req.body.details,
     rsvpDate: req.body.rsvpDate,
     pollOptions: req.body.pollOptions,
