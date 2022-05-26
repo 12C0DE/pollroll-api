@@ -1,6 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const Poll = require("../Models/Poll");
+const Pusher = require("pusher");
+
+const pusher = new Pusher({
+  appId: process.env.REACT_APP_PUSHER_APP_ID,
+  key: process.env.REACT_APP_PUSHER_KEY,
+  secret: process.env.REACT_APP_PUSHER_SECRET,
+  cluster: process.env.REACT_APP_PUSHER_CLUSTER,
+  useTLS: true,
+});
 
 router.get("/", async (req, res) => {
   try {
@@ -81,7 +90,7 @@ router.get("/:_id/:authId", async (req, res) => {
   }
 });
 
-//retrieve specific poll to VOTE
+//retrieve specific poll to VOTE ******PUSHER
 router.get("/:_id", async (req, res) => {
   try {
     const specPoll = await Poll.findById(req.params._id);
@@ -111,13 +120,14 @@ router.post("/post", async (req, res) => {
   }
 });
 
-//update a specific poll
+//update a specific poll ****PUSHER
 router.patch("/upd/:_id", async (req, res) => {
   try {
     const updPoll = await Poll.findOneAndUpdate(
       { _id: req.params._id },
       req.body
     );
+    pusher.trigger("polls", "poll-vote");
     res.sendStatus(204);
   } catch (err) {
     res.json({ message: err });
